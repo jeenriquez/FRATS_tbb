@@ -1,0 +1,70 @@
+There are some old ideas from some old emails. Mainly copy pasted, lightely edited to make it more understadable.
+------------------------
+Micro tutorial:
+You can just load a single station and by doing 
+
+```>>datafile = cr.open('file.h5')
+>>datafile  
+```
+
+then you will get basic information about that TBB file. Including the antennas. It is also possible that you don't have data for all antennas. In general you can also have files that have different time lengths or different observation starts. Thus, it is recommended to use frats_events.py for a given observation and this should take care of it.
+
+Make LOFAR centered and station centered beams.
+
+```
+ run frats_events.py LXXXX_DXXXxTXXXX -c -s core
+ run frats_events.py LXXXX_DXXXxTXXXX -s core
+```
+
+
+
+------------------------
+Note on *frats_event_localize.py*
+
+This is the localization pipeline I was building. 
+It is not finished, but it includes some ideas I had back then when I was working on this.
+Basically, the ideas was to run this script after frats_events.py
+
+------------------------
+
+To make the  image from PSR0329+54.
+
+1) Using only one pol.
+
+Some more ideas:
+
+- make sure you have the same reference station / station order when making the image.
+- is the order of filenames and filenames2 the same?
+- try looking at closure phases, in other words take 3 stations and check the delays between them.
+
+
+I also wanted to add here a couple extra ideas you can follow once you get the image from PSR0329+54.
+
+1) Try to get the CAL_DELAYS from the other pulses in the TBB data. 
+(I tried this once and didn't work well, it may have been that the other pulse I tried was linearly polarized and had lower SNR).
+
+2) Try to get the CAL_DELAYS for the different polarizations separately. 
+
+
+------------------------
+LOFAR TAB calibration:
+
+The LOFAR TABs are created by the observatory based on some table with time delays between the stations. With this, they are able to have "almost" coherent beams. 
+The idea is then that maybe we could be able to use the same delays, and be able to make an image. This in principle should work if the delays are good enough. But I'm not completely sold on this idea. 
+
+------------------------
+
+The next two points, are tests you can do to test the limits of you can do with the current data.
+
+2) About the images in the "off-beams" folder.
+with "off-beams" I mean that I created some beams (.beam) pointing in a direction which is off from the direction of the pulsar (which is at the phase center).
+
+Imagine you have a good calibration from a calibrator with in the beam (a couple of degrees around).
+These images are showing that you can "transfer" those solution into any direction within the beam and get a good image.
+So, those images are a proof of concept. 
+
+Also, "Old Pulse Image with old getRelativeAntennaPositions" image shows what happens when there is some small offset in the antenna positions. Just show it as illustrative purpose.
+
+3) Using ccBeams on the off beams. 
+if I take those off-beams and try to calibrate from them, using ccBeams, I get the delays which are a bit off, those the weird shape of the pulsar. 
+This is an issue to take into account and it needs to be looked into. It would be good to have a discussion at some point about this.  
